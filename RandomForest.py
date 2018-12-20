@@ -1,6 +1,6 @@
 # Load relevant packages and modules
 import pandas as pd
-from sklearn import tree
+from sklearn.ensemble import RandomForestClassifier
 import numpy as np
 
 # Load cleaned and formatted train and test data files (see Clean_and_format.py)
@@ -13,15 +13,14 @@ train_features = train[['Pclass', 'Sex', 'Age', 'Fare', 'Embarked', 'SibSp', 'Pa
 test_features = test[['Pclass', 'Sex', 'Age', 'Fare', 'Embarked', 'SibSp', 'Parch']].values
 
 # Fit decision tree
-my_tree = tree.DecisionTreeClassifier(max_depth=4, min_samples_split=5, random_state=1)
-my_tree = my_tree.fit(train_features, train_target)
+my_forest = RandomForestClassifier(max_depth=7, min_samples_split=5, n_estimators=100, random_state=1)
+my_forest = my_forest.fit(train_features, train_target)
 
-# Print feature importance and fitting score on training sample
-print(my_tree.feature_importances_)
-print(my_tree.score(train_features, train_target))
+# Print fitting score on training sample
+print(my_forest.score(train_features, train_target))
 
 # Predict targets on test sample
-my_prediction = my_tree.predict(test_features)
+my_prediction = my_forest.predict(test_features)
 
 # Create a data frame with two columns: PassengerId & Survived. Survived contains my predictions
 PassengerId =np.array(test["PassengerId"]).astype(int)

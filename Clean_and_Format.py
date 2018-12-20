@@ -5,31 +5,33 @@ import pandas as pd
 pd.options.mode.chained_assignment = None
 
 # Load data in Dataframe with Pandas
-df_train = pd.read_csv('train.csv')
-df_test = pd.read_csv('test.csv')
+train = pd.read_csv('train.csv')
+test = pd.read_csv('test.csv')
 
 #--- Cleaning and Formatting Data
 #Convert Sex categorical values to numerical value
-df_train['Sex'][df_train['Sex'] == 'male'] = 0
-df_train['Sex'][df_train['Sex'] == 'female'] = 1
-df_test['Sex'][df_test['Sex'] == 'male'] = 0
-df_test['Sex'][df_test['Sex'] == 'female'] = 1
+train['Sex'][train['Sex'] == 'male'] = 0
+train['Sex'][train['Sex'] == 'female'] = 1
+test['Sex'][test['Sex'] == 'male'] = 0
+test['Sex'][test['Sex'] == 'female'] = 1
 
-#Impute missing Age variables
-df_train['Age'] = df_train['Age'].fillna(df_train['Age'].median())
-df_test['Age'] = df_test['Age'].fillna(df_test['Age'].median())
+#Impute missing Age variables (train sample)
+train['Age'] = train['Age'].fillna(train['Age'].median())
+test['Age'] = test['Age'].fillna(test['Age'].median())
 
-#Impute missing Embarked variables
-df_train['Embarked'] = df_train['Embarked'].fillna('S')
-df_test['Embarked'] = df_train['Embarked'].fillna('S')
+#Impute missing Embarked variables (train sample)
+train['Embarked'] = train['Embarked'].fillna('S')
+
+#Impute missing Fare variable (test sample)
+test['Fare'] = test['Fare'].fillna(test['Fare'].median())
 
 #Convert Embarked categorical values to numerical values
-df_train['Embarked'][df_train['Embarked'] == 'S'] = 0
-df_train['Embarked'][df_train['Embarked'] == 'C'] = 1
-df_train['Embarked'][df_train['Embarked'] == 'Q'] = 2
-df_test['Embarked'][df_test['Embarked'] == 'S'] = 0
-df_test['Embarked'][df_test['Embarked'] == 'C'] = 1
-df_test['Embarked'][df_test['Embarked'] == 'Q'] = 2
+train['Embarked'][train['Embarked'] == 'S'] = 0
+train['Embarked'][train['Embarked'] == 'C'] = 1
+train['Embarked'][train['Embarked'] == 'Q'] = 2
+test['Embarked'][test['Embarked'] == 'S'] = 0
+test['Embarked'][test['Embarked'] == 'C'] = 1
+test['Embarked'][test['Embarked'] == 'Q'] = 2
 
-df_train.to_csv('train_cleaned.csv')
-df_test.to_csv('test_cleaned.csv')
+train.to_csv('train_cleaned.csv')
+test.to_csv('test_cleaned.csv')

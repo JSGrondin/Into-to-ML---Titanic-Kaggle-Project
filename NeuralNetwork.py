@@ -23,8 +23,9 @@ n_cols = train_features.shape[1]
 
 # Specify the model
 model = Sequential()
-model.add(Dense(10, activation='relu', input_shape = (n_cols,)))
-model.add(Dense(10, activation='relu', input_shape = (n_cols,)))
+model.add(Dense(50, activation='relu', input_shape = (n_cols,)))
+model.add(Dense(50, activation='relu', input_shape = (n_cols,)))
+model.add(Dense(50, activation='relu', input_shape = (n_cols,)))
 model.add(Dense(2, activation='softmax'))
 
 # Compile the model

@@ -5,6 +5,7 @@ from keras.layers import Dense
 from keras.models import Sequential
 from keras.utils import to_categorical
 from sklearn.metrics import accuracy_score
+from keras.optimizers import SGD
 
 # Load cleaned and formatted train and test data files (see Clean_and_format.py)
 train = pd.read_csv('train_cleaned.csv')
@@ -23,9 +24,9 @@ n_cols = train_features.shape[1]
 
 # Specify the model
 model = Sequential()
-model.add(Dense(50, activation='relu', input_shape = (n_cols,)))
-model.add(Dense(50, activation='relu', input_shape = (n_cols,)))
-model.add(Dense(50, activation='relu', input_shape = (n_cols,)))
+model.add(Dense(200, activation='relu', input_shape = (n_cols,)))
+model.add(Dense(200, activation='relu'))
+model.add(Dense(200, activation='relu'))
 model.add(Dense(2, activation='softmax'))
 
 # Compile the model

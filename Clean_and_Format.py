@@ -26,12 +26,8 @@ train['Embarked'] = train['Embarked'].fillna('S')
 test['Fare'] = test['Fare'].fillna(test['Fare'].median())
 
 #Convert Embarked categorical values to numerical values
-train['Embarked'][train['Embarked'] == 'S'] = 0
-train['Embarked'][train['Embarked'] == 'C'] = 1
-train['Embarked'][train['Embarked'] == 'Q'] = 2
-test['Embarked'][test['Embarked'] == 'S'] = 0
-test['Embarked'][test['Embarked'] == 'C'] = 1
-test['Embarked'][test['Embarked'] == 'Q'] = 2
+train['Embarked'] = train['Embarked'].map( {'S': 0, 'C': 1, 'Q': 2} ).astype(int)
+test['Embarked'] = test['Embarked'].map( {'S': 0, 'C': 1, 'Q': 2} ).astype(int)
 
 train.to_csv('train_cleaned.csv')
 test.to_csv('test_cleaned.csv')

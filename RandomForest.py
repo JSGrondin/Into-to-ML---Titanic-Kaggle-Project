@@ -13,7 +13,7 @@ train_features = train[['Pclass', 'Sex', 'Age', 'Fare', 'Embarked', 'SibSp', 'Pa
 test_features = test[['Pclass', 'Sex', 'Age', 'Fare', 'Embarked', 'SibSp', 'Parch']].values
 
 # Fit decision tree
-my_forest = RandomForestClassifier(max_depth=7, min_samples_split=5, n_estimators=100, random_state=1)
+my_forest = RandomForestClassifier(max_depth=5, min_samples_split=2, n_estimators=200, random_state=1)
 my_forest = my_forest.fit(train_features, train_target)
 
 # Print fitting score on training sample

@@ -10,10 +10,8 @@ test = pd.read_csv('test.csv')
 
 #--- Cleaning and Formatting Data
 #Convert Sex categorical values to numerical value
-train['Sex'][train['Sex'] == 'male'] = 0
-train['Sex'][train['Sex'] == 'female'] = 1
-test['Sex'][test['Sex'] == 'male'] = 0
-test['Sex'][test['Sex'] == 'female'] = 1
+train['Sex'] = train['Sex'].map( {'male': 0, 'female': 1} ).astype(int)
+test['Sex'] = test['Sex'].map( {'male': 0, 'female': 1} ).astype(int)
 
 #Impute missing Age variables (train sample)
 train['Age'] = train['Age'].fillna(train['Age'].median())

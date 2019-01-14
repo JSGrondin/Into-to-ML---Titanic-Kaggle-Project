@@ -61,6 +61,8 @@ train.loc[train['FamilySize'] == 1, 'IsAlone'] = 1
 test['IsAlone'] = 0
 test.loc[train['FamilySize'] == 1, 'IsAlone'] = 1
 
+train.head(10)
+test.head(10)
 #Save cleaned files to .csv
 train.to_csv('train_cleaned.csv')
 test.to_csv('test_cleaned.csv')

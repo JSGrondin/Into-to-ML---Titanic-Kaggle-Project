@@ -9,8 +9,8 @@ test = pd.read_csv('test_cleaned.csv')
 
 # Create the target and features numpy arrays
 train_target = train['Survived'].values
-train_features = train[['Pclass', 'Sex', 'Age', 'Fare', 'Embarked', 'SibSp', 'Parch']].values
-test_features = test[['Pclass', 'Sex', 'Age', 'Fare', 'Embarked', 'SibSp', 'Parch']].values
+train_features = train[['Pclass', 'Sex', 'Age', 'Fare', 'Embarked', 'FamilySize', 'IsAlone', 'Title']].values
+test_features = test[['Pclass', 'Sex', 'Age', 'Fare', 'Embarked', 'FamilySize', 'IsAlone', 'Title']].values
 
 # Fit decision tree
 my_tree = tree.DecisionTreeClassifier(max_depth=4, min_samples_split=5, random_state=1)

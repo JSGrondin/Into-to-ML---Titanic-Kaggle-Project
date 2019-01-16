@@ -14,9 +14,21 @@ combine = [train, test]
 for dataset in combine:
         dataset['Sex'] = dataset['Sex'].map( {'male': 0, 'female': 1} ).astype(int)
 
-#Impute missing Age variables (train sample)
+#Impute missing Age variables (using median from different Sex/Pclass group combinations)
+guess_ages = np.zeros((2,3))
 for dataset in combine:
-        dataset['Age'] = dataset['Age'].fillna(dataset['Age'].median())
+        for i in range(0, 2):   #Sex
+            for j in range(0, 3):       #Pclass
+                guess_df = dataset[(dataset['Sex']==i) & (dataset['Pclass'] == j+1)]['Age'].dropna()
+                age_guess = guess_df.median()
+                guess_ages[i,j] = int(age_guess/0.5+0.5)*0.5
+
+        for i in range(0, 2):
+            for j in range(0, 3):
+                dataset.loc[(dataset.Age.isnull()) & (dataset.Sex == i) & (dataset.Pclass == j+1),\
+                        'Age'] = guess_ages[i,j]
+
+        dataset['Age'] = dataset['Age'].astype(int)
 
 #Impute missing Embarked variables (train sample)
 train['Embarked'] = train['Embarked'].fillna('S')

@@ -11,12 +11,12 @@ combine = [train, test]
 
 #--- Cleaning and Formatting Data
 #Convert Sex categorical values to numerical value
-train['Sex'] = train['Sex'].map( {'male': 0, 'female': 1} ).astype(int)
-test['Sex'] = test['Sex'].map( {'male': 0, 'female': 1} ).astype(int)
+for dataset in combine:
+        dataset['Sex'] = dataset['Sex'].map( {'male': 0, 'female': 1} ).astype(int)
 
 #Impute missing Age variables (train sample)
-train['Age'] = train['Age'].fillna(train['Age'].median())
-test['Age'] = test['Age'].fillna(test['Age'].median())
+for dataset in combine:
+        dataset['Age'] = dataset['Age'].fillna(dataset['Age'].median())
 
 #Impute missing Embarked variables (train sample)
 train['Embarked'] = train['Embarked'].fillna('S')
@@ -25,45 +25,36 @@ train['Embarked'] = train['Embarked'].fillna('S')
 test['Fare'] = test['Fare'].fillna(test['Fare'].median())
 
 #Convert Embarked categorical values to numerical values
-train['Embarked'] = train['Embarked'].map( {'S': 0, 'C': 1, 'Q': 2} ).astype(int)
-test['Embarked'] = test['Embarked'].map( {'S': 0, 'C': 1, 'Q': 2} ).astype(int)
+for dataset in combine:
+        dataset['Embarked'] = dataset['Embarked'].map( {'S': 0, 'C': 1, 'Q': 2} ).astype(int)
 
 #identify titles in Names and convert to categorical values
-train['Title'] = train.Name.str.extract(' ([A-Za-z]+)\.', expand=False)
-test['Title'] = test.Name.str.extract(' ([A-Za-z]+)\.', expand=False)
-train['Title'] = train['Title'].replace(['Lady', 'Countess','Capt', 'Col',\
-        'Don', 'Dr', 'Major', 'Rev', 'Sir', 'Jonkheer', 'Dona'], 'Rare')
-
-train['Title'] = train['Title'].replace('Mlle', 'Miss')
-train['Title'] = train['Title'].replace('Ms', 'Miss')
-train['Title'] = train['Title'].replace('Mme', 'Mrs')
-test['Title'] = test['Title'].replace(['Lady', 'Countess','Capt', 'Col',\
-        'Don', 'Dr', 'Major', 'Rev', 'Sir', 'Jonkheer', 'Dona'], 'Rare')
-
-test['Title'] = test['Title'].replace('Mlle', 'Miss')
-test['Title'] = test['Title'].replace('Ms', 'Miss')
-test['Title'] = test['Title'].replace('Mme', 'Mrs')
+for dataset in combine:
+        dataset['Title'] = dataset.Name.str.extract(' ([A-Za-z]+)\.', expand=False)
+        dataset['Title'] = dataset['Title'].replace(['Lady', 'Countess','Capt', 'Col',\
+                'Don', 'Dr', 'Major', 'Rev', 'Sir', 'Jonkheer', 'Dona'], 'Rare')
+        dataset['Title'] = dataset['Title'].replace('Mlle', 'Miss')
+        dataset['Title'] = dataset['Title'].replace('Ms', 'Miss')
+        dataset['Title'] = dataset['Title'].replace('Mme', 'Mrs')
 
 title_mapping = {"Mr": 1, "Miss": 2, "Mrs": 3, "Master": 4, "Rare": 5}
-train['Title'] = train['Title'].map(title_mapping)
-train['Title'] = train['Title'].fillna(0)
-test['Title'] = test['Title'].map(title_mapping)
-test['Title'] = test['Title'].fillna(0)
-
-#droping features: Name and PassengerId
-train = train.drop(['Name', 'PassengerId'], axis=1)
-test = test.drop(['Name'], axis=1)
+for dataset in combine:
+        dataset['Title'] = dataset['Title'].map(title_mapping)
+        dataset['Title'] = dataset['Title'].fillna(0)
 
 #creating feature: FamilySize and IsAlone
-train['FamilySize'] = train['SibSp'] + train['Parch'] + 1
-test['FamilySize'] = test['SibSp'] + test['Parch'] + 1
-train['IsAlone'] = 0
-train.loc[train['FamilySize'] == 1, 'IsAlone'] = 1
-test['IsAlone'] = 0
-test.loc[train['FamilySize'] == 1, 'IsAlone'] = 1
+for dataset in combine:
+        dataset['FamilySize'] = dataset['SibSp'] + dataset['Parch'] + 1
+        dataset['IsAlone'] = 0
+        dataset.loc[train['FamilySize'] == 1, 'IsAlone'] = 1
 
-train.head(10)
-test.head(10)
+#droping features: Name and PassengerId
+train = train.drop(['Ticket', 'Cabin', 'Name', 'PassengerId', 'SibSp', 'Parch'], axis=1)
+test = test.drop(['Ticket', 'Cabin', 'Name', 'SibSp', 'Parch'], axis=1)
+
+#train.head(10)
+#test.head(10)
+
 #Save cleaned files to .csv
 train.to_csv('train_cleaned.csv')
 test.to_csv('test_cleaned.csv')

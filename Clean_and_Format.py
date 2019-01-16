@@ -7,6 +7,7 @@ pd.options.mode.chained_assignment = None
 # Load data in Dataframe with Pandas
 train = pd.read_csv('train.csv')
 test = pd.read_csv('test.csv')
+combine = [train, test]
 
 #--- Cleaning and Formatting Data
 #Convert Sex categorical values to numerical value

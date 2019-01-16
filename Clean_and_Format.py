@@ -1,5 +1,6 @@
 # Load relevant packages
 import pandas as pd
+import numpy as np
 
 #Disable warning from pandas for chained assignment
 pd.options.mode.chained_assignment = None

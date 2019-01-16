@@ -31,15 +31,40 @@ for dataset in combine:
 
         dataset['Age'] = dataset['Age'].astype(int)
 
+#Creating Age Bands to study correlation with Survived
+#train['AgeBand'] = pd.cut(train['Age'], 5)
+#train[['AgeBand', 'Survived']].groupby(['AgeBand'], as_index=False).mean().sort_values(by='AgeBand', ascending=True)
+
+#Replace Age with ordinals based on age bands
+for dataset in combine:
+    dataset.loc[dataset['Age'] <= 16, 'Age'] = int(0)
+    dataset.loc[(dataset['Age'] > 16) & (dataset['Age'] <= 32), 'Age'] = int(1)
+    dataset.loc[(dataset['Age'] > 32) & (dataset['Age'] <= 48), 'Age'] = int(2)
+    dataset.loc[(dataset['Age'] > 48) & (dataset['Age'] <= 64), 'Age'] = int(3)
+    dataset.loc[ dataset['Age'] > 64, 'Age'] = int(4)
+
 #Impute missing Embarked variables (train sample)
 train['Embarked'] = train['Embarked'].fillna('S')
-
-#Impute missing Fare variable (test sample)
-test['Fare'] = test['Fare'].fillna(test['Fare'].median())
 
 #Convert Embarked categorical values to numerical values
 for dataset in combine:
         dataset['Embarked'] = dataset['Embarked'].map( {'S': 0, 'C': 1, 'Q': 2} ).astype(int)
+
+#Create dummy variables to replace categorical feature Embarked,
+train = pd.concat([train, pd.get_dummies(train['Embarked'], prefix='Embarked', prefix_sep='_')], axis=1)
+test = pd.concat([test, pd.get_dummies(test['Embarked'], prefix='Embarked', prefix_sep='_')], axis=1)
+combine = [train, test]
+
+#Impute missing Fare variable (test sample)
+test['Fare'] = test['Fare'].fillna(test['Fare'].median())
+
+#Create FareBand from Fare feature
+for dataset in combine:
+    dataset.loc[ dataset['Fare'] <= 7.91, 'Fare'] = 0
+    dataset.loc[(dataset['Fare'] > 7.91) & (dataset['Fare'] <= 14.454), 'Fare'] = 1
+    dataset.loc[(dataset['Fare'] > 14.454) & (dataset['Fare'] <= 31), 'Fare']   = 2
+    dataset.loc[ dataset['Fare'] > 31, 'Fare'] = 3
+    dataset['Fare'] = dataset['Fare'].astype(int)
 
 #identify titles in Names and convert to categorical values
 for dataset in combine:
@@ -62,8 +87,8 @@ for dataset in combine:
         dataset.loc[train['FamilySize'] == 1, 'IsAlone'] = 1
 
 #droping features: Name and PassengerId
-train = train.drop(['Ticket', 'Cabin', 'Name', 'PassengerId', 'SibSp', 'Parch'], axis=1)
-test = test.drop(['Ticket', 'Cabin', 'Name', 'SibSp', 'Parch'], axis=1)
+train = train.drop(['Ticket', 'Cabin', 'Name', 'PassengerId', 'SibSp', 'Parch', 'Embarked', 'Embarked_2'], axis=1)
+test = test.drop(['Ticket', 'Cabin', 'Name', 'SibSp', 'Parch', 'Embarked', 'Embarked_2'], axis=1)
 
 #train.head(10)
 #test.head(10)

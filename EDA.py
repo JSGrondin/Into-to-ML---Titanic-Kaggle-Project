@@ -45,3 +45,4 @@ grid.add_legend()
 grid = sns.FacetGrid(train, row='Embarked', col='Survived', size=2.2, aspect=1.6)
 grid.map(sns.barplot, 'Sex', 'Fare', alpha=.5, ci=None)
 grid.add_legend()
+

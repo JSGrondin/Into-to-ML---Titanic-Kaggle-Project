@@ -1,6 +1,6 @@
 # Load relevant packages and modules
 import pandas as pd
-from sklearn.linear_model import LogisticRegression
+from sklearn.svm import SVC
 import numpy as np
 
 # Load cleaned and formatted train and test data files (see Clean_and_format.py)
@@ -13,20 +13,15 @@ Y_train = train['Survived'].values
 X_train = train[features].values
 X_test = test[features].values
 
-# Fit Logistic Regression model
-logreg = LogisticRegression()
-logreg.fit(X_train, Y_train)
-acc_log = round(logreg.score(X_train, Y_train) * 100, 2)
-print(acc_log)
-
-# Print correlation of coefficients
-coeff = pd.DataFrame(features)
-coeff.columns = ['Features']
-coeff["Correlation"] = pd.Series(logreg.coef_[0])
-coeff.sort_values(by='Correlation', ascending=False)
+# Fit Support Vector Machine model
+svc = SVC()
+svc.fit(X_train, Y_train)
+Y_pred = svc.predict(X_test)
+acc_svc = round(svc.score(X_train, Y_train) * 100, 2)
+print(acc_svc)
 
 # Predict targets on test sample
-my_prediction = logreg.predict(X_test)
+my_prediction = svc.predict(X_test)
 
 # Create a data frame with two columns: PassengerId & Survived. Survived contains my predictions
 PassengerId =np.array(test["PassengerId"]).astype(int)
